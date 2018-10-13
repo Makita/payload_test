@@ -16,12 +16,11 @@ class Ticketer
 
   def add_event_to_ticket(category, measurement = nil)
     measurement = 0 if %w(start stop).include?(category)
-    raise Exceptions::TicketAlreadyStoppedError if @ticket && @ticket.events.where(category: "stop").exists?
-    Event.create!(ticket: @ticket, category: category, measurement: measurement)
-  rescue ActiveRecord::ActiveRecordError
-    Event.new
-  rescue Exceptions::TicketAlreadyStoppedError
-    Event.new
+    raise Exceptions::TicketAlreadyStopped if @ticket && @ticket.events.where(category: "stop").exists?
+    ActiveRecord::Base.transaction do
+      Event.create!(ticket: @ticket, category: category, measurement: measurement)
+      @ticket.update_attribute(:status, "completed")
+    end
   end
 
   # Destroy invokes callbacks but we're not using them anyway so this is better

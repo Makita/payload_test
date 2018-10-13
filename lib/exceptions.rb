@@ -1,3 +1,3 @@
 module Exceptions
-  class TicketAlreadyStoppedError < StandardError; end
+  class TicketAlreadyStopped < StandardError; end
 end

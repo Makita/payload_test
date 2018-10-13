@@ -29,18 +29,24 @@ describe Ticketer, '.add_event_to_ticket' do
   it "requires a valid ticket" do
     @ticketer.ticket = nil
 
-    expect(@ticketer.add_event_to_ticket("stop").category).to be_nil
+    expect { @ticketer.add_event_to_ticket("stop") }.to raise_error(ActiveRecord::RecordInvalid)
   end
 
   it "requires a measurement for pickup and delivery" do
-    expect(@ticketer.add_event_to_ticket("pickup").category).to be_nil
-    expect(@ticketer.add_event_to_ticket("delivery").category).to be_nil
+    expect { @ticketer.add_event_to_ticket("pickup") }.to raise_error(ActiveRecord::RecordInvalid)
+    expect { @ticketer.add_event_to_ticket("delivery") }.to raise_error(ActiveRecord::RecordInvalid)
   end
 
   it "does not allow any event additions after a stop event" do
     @ticketer.add_event_to_ticket("stop")
 
-    expect(@ticketer.add_event_to_ticket("pickup", 10).category).to be_nil
+    expect { @ticketer.add_event_to_ticket("pickup", 10) }.to raise_exception(Exceptions::TicketAlreadyStopped)
+  end
+
+  it "changes ticket status to completed if event is of category stop" do
+    @ticketer.add_event_to_ticket("stop")
+
+    expect(@ticketer.ticket.status).to eq "completed"
   end
 end
 
