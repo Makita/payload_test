@@ -2,6 +2,10 @@ require 'rails_helper'
 require 'spec_helper'
 
 describe Ticket do
+  it "responds to events" do
+    expect(Ticket.new()).to respond_to(:events)
+  end
+
   it "is valid without input" do
     expect(Ticket.new()).to be_valid
   end

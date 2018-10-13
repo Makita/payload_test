@@ -6,6 +6,10 @@ describe Event do
     @ticket = Ticket.new
   end
 
+  it "responds to ticket" do
+    expect(Event.new(ticket: @ticket, category: "start", measurement: 0)).to respond_to(:ticket)
+  end
+
   it "is valid with valid attributes" do
     expect(Event.new(ticket: @ticket, category: "start", measurement: 0)).to be_valid
   end
