@@ -3,7 +3,6 @@ class App extends React.Component {
     super(props);
 
     this.state = {
-      currentPage: window.location.hash || "#list",
       tickets: props.tickets,
       events: props.events,
     };
