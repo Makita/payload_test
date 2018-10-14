@@ -24,10 +24,4 @@ class Ticketer
 
     @event
   end
-
-  # Destroy invokes callbacks but we're not using them anyway so this is better
-  def delete_ticket
-    @ticket.events.each { |event| event.delete }
-    @ticket.delete
-  end
 end

@@ -63,24 +63,4 @@ describe Ticketer do
       expect(@ticketer.ticket.status).to eq "completed"
     end
   end
-
-  describe '.delete_ticket' do
-    before(:each) do
-      @ticketer        = Ticketer.new
-      @ticketer.ticket = Ticket.create
-      @ticketer.add_event_to_ticket("start")
-      @ticketer.add_event_to_ticket("pickup", 10)
-      @ticketer.add_event_to_ticket("stop")
-    end
-
-    it "deletes the ticket" do
-      @ticketer.delete_ticket
-      expect(Ticket.all).to_not exist
-    end
-
-    it "removes all events for that ticket" do
-      @ticketer.delete_ticket
-      expect(Event.where(ticket_id: 1)).to_not exist
-    end
-  end
 end

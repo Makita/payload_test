@@ -6,7 +6,6 @@ class Content extends React.Component {
   constructor(props) {
     super(props);
 
-    this.currentPage = props.currentPage;
     this.tickets = props.tickets || [];
     this.events = props.events || [];
 
