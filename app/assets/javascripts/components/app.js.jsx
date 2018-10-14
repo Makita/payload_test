@@ -72,7 +72,7 @@ class App extends React.Component {
   handleEventSubmit(event) {
     event.preventDefault();
 
-    var formData = new FormData();
+    let formData = new FormData();
     formData.append("ticket_id",   document.getElementById("eventTicketSelection").value);
     formData.append("category",    document.getElementById("eventCategorySelection").value);
     formData.append("measurement", document.getElementById("eventMeasurement").value);
@@ -88,9 +88,17 @@ class App extends React.Component {
   eventSuccess(data) {
     console.log(data);
 
+    this.state.tickets = this.state.tickets.map((ticket) => {
+      if(ticket.id == data.ticket_id) {
+        ticket.status = "completed";
+        ticket.updated_at = new Date(); // Because we process the timestamp with implicit Date.parse, this is fine
+      }
+      return ticket;
+    });
     this.state.events.push(data);
 
     this.setState({
+      tickets: this.state.tickets,
       events: this.state.events,
     });
   }

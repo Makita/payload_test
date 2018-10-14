@@ -1,3 +1,5 @@
+require 'ticketer'
+
 class TicketsController < ApplicationController
   def create
     @ticketer = Ticketer.new

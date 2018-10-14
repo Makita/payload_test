@@ -4,7 +4,7 @@ function EventRow(props) {
       <th scope="row">{props.id}</th>
       <td>{props.ticket}</td>
       <td>{props.category}</td>
-      <td>{props.category == "start" || props.category == "stop" ? "N/A" : props.measurement}</td>
+      <td>{props.category != "start" && props.category != "stop" && props.measurement}</td>
     </tr>
   );
 }
