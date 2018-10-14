@@ -8,9 +8,10 @@ class App extends React.Component {
       events: props.events,
     };
 
-    this.ticketSuccess = this.ticketSuccess.bind(this);
     this.handleTicketSubmit = this.handleTicketSubmit.bind(this);
+    this.ticketSuccess = this.ticketSuccess.bind(this);
     this.handleEventSubmit = this.handleEventSubmit.bind(this);
+    this.eventSuccess = this.eventSuccess.bind(this);
   }
 
   handleTicketSubmit(event) {
@@ -25,7 +26,7 @@ class App extends React.Component {
     })
       .done(this.ticketSuccess)
       .fail(function(data) {
-        alert(data.message);
+        alert(data.responseText);
       });
   }
 
@@ -44,16 +45,23 @@ class App extends React.Component {
   handleEventSubmit(event) {
     event.preventDefault();
 
+    let formData = {
+      ticket_id:   $("#eventTicketSelection").val(),
+      category:    $("#eventCategorySelection").val(),
+      measurement: $("#eventMeasurement").val(),
+    };
+
     $.ajax({
-      url:     '/events',
-      method:  'POST',
+      url:         '/events',
+      method:      'POST',
+      data:        formData,
       headers: {
         'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
       }
     })
       .done(this.eventSuccess)
       .fail(function(data) {
-        alert(data.message);
+        alert(data.responseText);
       });
   }
 

@@ -1,11 +1,13 @@
 class EventsController < ApplicationController
   def create
-    raise StandardError
     @ticketer        = Ticketer.new
-    @ticketer.ticket = params["ticket"]
+    @ticketer.ticket = Ticket.find_by_id(params["ticket_id"])
+    @event           = @ticketer.add_event_to_ticket(params["category"], params["measurement"])
 
-    render json: { ticket: @ticket, event: @event }
-  rescue StandardError
-    render json: { status: "error", code: 500, message: "Something went wrong with the creation of the event." }
+    render json: @event
+  rescue StandardError => e
+    puts e.message
+
+    render json: e.message, status: 500
   end
 end

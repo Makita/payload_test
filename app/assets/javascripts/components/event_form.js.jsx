@@ -13,7 +13,7 @@ class EventForm extends React.Component {
 
   render() {
     return (
-      <form onSubmit={this.handleSubmit}>
+      <form id="eventCreationForm" onSubmit={this.handleSubmit}>
         <div className="form-group row">
           <label className="col-sm-2 col-form-label" htmlFor="eventTicketSelection">Ticket</label>
           <div className="col-sm-10">
@@ -26,20 +26,20 @@ class EventForm extends React.Component {
           <label className="col-sm-2 col-form-label" htmlFor="eventCategorySelection">Type</label>
           <div className="col-sm-10">
             <select className="form-control" id="eventCategorySelection">
-              <option>Start</option>
-              <option>Pickup</option>
-              <option>Delivery</option>
-              <option>Stop</option>
+              <option value="start">Start</option>
+              <option value="pickup">Pickup</option>
+              <option value="delivery">Delivery</option>
+              <option value="stop">Stop</option>
             </select>
           </div>
         </div>
         <div className="form-group row">
           <label className="col-sm-2 col-form-label" htmlFor="eventMeasurement">Measurement</label>
           <div className="col-sm-10">
-            <input className="form-control" id="eventMeasurement" type="text" placeholder="100" />
+            <input className="form-control" id="eventMeasurement" type="text" placeholder="Example: 100" />
           </div>
         </div>
-        <button className="btn btn-primary">Add Event</button>
+        <button type="submit" className="btn btn-primary">Add Event</button>
       </form>
     );
   }
