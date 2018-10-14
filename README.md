@@ -23,8 +23,10 @@
     * If ticket is made, need start event
     * If stop event is made, updates ticket
     * Prevents addition of more events after stop
+    * Prevents creation of more than one start event
   * Exceptions
-    * Just the one custom error for if there's an attempt to make another event after stop
+    * TicketAlreadyStopped
+    * TicketAlreadyStarted (should never hit this one but it's here)
 * React
   * App
     * Content
