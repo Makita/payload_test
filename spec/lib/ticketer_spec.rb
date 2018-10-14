@@ -1,5 +1,6 @@
 require 'rails_helper'
 require 'spec_helper'
+require Rails.root.join('lib/ticketer')
 
 describe Ticketer do
   describe '.create_ticket' do
@@ -30,12 +31,13 @@ describe Ticketer do
 
   describe '.add_event_to_ticket' do
     before(:each) do
-      @ticketer        = Ticketer.new
+      @ticketer = Ticketer.new
       @ticketer.create_ticket
     end
 
     it "makes an event with valid attributes" do
       @ticketer.add_event_to_ticket("pickup", 10)
+      puts Ticket.find(1).events
 
       expect(@ticketer.ticket.events.length).to eq 2
     end
@@ -49,6 +51,10 @@ describe Ticketer do
     it "requires a measurement for pickup and delivery" do
       expect { @ticketer.add_event_to_ticket("pickup") }.to raise_error(ActiveRecord::RecordInvalid)
       expect { @ticketer.add_event_to_ticket("delivery") }.to raise_error(ActiveRecord::RecordInvalid)
+    end
+
+    it "can't make a second start event" do
+      expect { @ticketer.add_event_to_ticket("start") }.to raise_error(Exceptions::TicketAlreadyStarted)
     end
 
     it "does not allow any event additions after a stop event" do

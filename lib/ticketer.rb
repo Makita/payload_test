@@ -15,7 +15,14 @@ class Ticketer
   end
 
   def add_event_to_ticket(category, measurement = nil)
-    measurement = 0 if %w(start stop).include?(category)
+    if category == "start" && !@event.nil?
+      raise Exceptions::TicketAlreadyStarted
+    end
+
+    if category == "start" || category == "stop"
+      measurement = 0
+    end
+
     raise Exceptions::TicketAlreadyStopped if @ticket && @ticket.events.where(category: "stop").exists?
     ActiveRecord::Base.transaction do
       @event = Event.create!(ticket: @ticket, category: category, measurement: measurement)
