@@ -26,7 +26,6 @@ class EventForm extends React.Component {
           <label className="col-sm-2 col-form-label" htmlFor="eventCategorySelection">Type</label>
           <div className="col-sm-10">
             <select className="form-control" id="eventCategorySelection">
-              <option value="start">Start</option>
               <option value="pickup">Pickup</option>
               <option value="delivery">Delivery</option>
               <option value="stop">Stop</option>
