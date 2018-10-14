@@ -13,19 +13,47 @@ class App extends React.Component {
     this.eventSuccess = this.eventSuccess.bind(this);
   }
 
+  // HTML tag, attribute we want, attribute to search for, value the attribute we search for should
+  // have
+  getTagAttr(tag, attr, checkAttr, checkValue) {
+    var tags = document.getElementsByTagName(tag);
+
+    for(let i = 0; i < tags.length; i++) {
+      if(tags[i].getAttribute(checkAttr) == checkValue) {
+        return tags[i].getAttribute(attr);
+      }
+    }
+  }
+
+  // Get rid of jQuery $.ajax dependency with this
+  post(url, data) {
+    return new Promise(function(resolve, reject) {
+      var xhr = new XMLHttpRequest();
+      xhr.open('POST', url);
+      xhr.onload = () => {
+        if(xhr.status >= 200 && xhr.status < 300) {
+          resolve(JSON.parse(xhr.response));
+        } else {
+          reject(new Error("Server responded with failure status."));
+        }
+      };
+      xhr.onerror = () => {
+        reject(new Error("Failed to POST to " + url + "."));
+      };
+      // Get past Rails cross-site stuff
+      xhr.setRequestHeader('X-CSRF-Token', this.getTagAttr('meta', 'content', 'name', 'csrf-token'));
+      xhr.send(data);
+    }.bind(this));
+  }
+
   handleTicketSubmit(event) {
     event.preventDefault();
 
-    $.ajax({
-      url:     '/tickets',
-      method:  'POST',
-      headers: {
-        'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
-      }
-    })
-      .done(this.ticketSuccess)
-      .fail(function(data) {
-        alert(data.responseText);
+    this.post('/tickets', {})
+      .then(this.ticketSuccess)
+      .catch(function(data) {
+        console.log(data);
+        alert(data);
       });
   }
 
@@ -44,23 +72,16 @@ class App extends React.Component {
   handleEventSubmit(event) {
     event.preventDefault();
 
-    let formData = {
-      ticket_id:   $("#eventTicketSelection").val(),
-      category:    $("#eventCategorySelection").val(),
-      measurement: $("#eventMeasurement").val(),
-    };
+    var formData = new FormData();
+    formData.append("ticket_id",   document.getElementById("eventTicketSelection").value);
+    formData.append("category",    document.getElementById("eventCategorySelection").value);
+    formData.append("measurement", document.getElementById("eventMeasurement").value);
 
-    $.ajax({
-      url:         '/events',
-      method:      'POST',
-      data:        formData,
-      headers: {
-        'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
-      }
-    })
-      .done(this.eventSuccess)
-      .fail(function(data) {
-        alert(data.responseText);
+    this.post('/events', formData)
+      .then(this.eventSuccess)
+      .catch(function(data) {
+        console.log(data);
+        alert(data);
       });
   }
 
