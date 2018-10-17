@@ -1,7 +1,7 @@
 function EventTable(props) {
   return props.events.map((event) => {
     return (
-      <tr>
+      <tr key={event.id}>
         <th scope="row">{event.id}</th>
         <td>{event.ticket}</td>
         <td>{event.category}</td>

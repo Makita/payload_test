@@ -1,6 +1,6 @@
 function TicketTable(props) {
   return props.tickets.map((ticket) => {
-    <tr>
+    <tr key={ticket.id}>
       <th scope="row">{ticket.id}</th>
       <td>{ticket.status}</td>
       <td>{ticket.status === "completed" && new Date(event.updated_at).toLocaleString()}</td>
