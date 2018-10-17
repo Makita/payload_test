@@ -1,15 +1,11 @@
-function TicketRow(props) {
-  return (
-    <tr>
-      <th scope="row">{props.id}</th>
-      <td>{props.status}</td>
-      <td>{props.status == "completed" && new Date(props.updatedAt).toLocaleString()}</td>
-    </tr>
-  );
-}
-
 function TicketTable(props) {
-  return props.tickets.map((ticket) => <TicketRow id={ticket.id} status={ticket.status} updatedAt={ticket.updated_at} key={ticket.id} />);
+  return props.tickets.map((ticket) => {
+    <tr>
+      <th scope="row">{ticket.id}</th>
+      <td>{ticket.status}</td>
+      <td>{ticket.status === "completed" && new Date(event.updated_at).toLocaleString()}</td>
+    </tr>
+  });
 }
 
 class TicketDisplay extends React.Component {

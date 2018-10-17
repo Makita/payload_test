@@ -1,16 +1,14 @@
-function EventRow(props) {
-  return (
-    <tr>
-      <th scope="row">{props.id}</th>
-      <td>{props.ticket}</td>
-      <td>{props.category}</td>
-      <td>{props.category != "start" && props.category != "stop" && props.measurement}</td>
-    </tr>
-  );
-}
-
 function EventTable(props) {
-  return props.events.map((event) => <EventRow id={event.id} ticket={event.ticket_id} category={event.category} measurement={event.measurement} key={event.id} />);
+  return props.events.map((event) => {
+    return (
+      <tr>
+        <th scope="row">{event.id}</th>
+        <td>{event.ticket}</td>
+        <td>{event.category}</td>
+        <td>{event.category !== "start" && event.category !== "stop" && event.measurement}</td>
+      </tr>
+    )
+  });
 }
 
 class EventDisplay extends React.Component {
